@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Open+Sans+Condensed:wght@300&display=swap');
+.how-to{
+    font-family: 'Baloo 2', cursive;
+    font-size:3.5rem;
+}
+
+#para{
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 2rem;
+}
+#ty{
+    font-size: 2.5rem;
+}

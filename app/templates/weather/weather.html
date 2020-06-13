@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather App</title>
+    {%load static%}
+    <link href="{%static 'css/app.css' %}" rel="stylesheet" type="text/css" media="all" />
+    <link href="{%static 'css/nav.css' %}" rel="stylesheet" type="text/css" media="all" />
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.0/css/mdb.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+
+    <link rel="shortcut icon"
+        href="https://cdn3.iconfinder.com/data/icons/bebreezee-weather-symbols/691/icon-weather-sunsleetlight-512.png"
+        type="image/x-icon">
+</head>
+
+<body>
+    <nav id="mainNavbar" class="navbar  navbar-dark bg-dark navbar-expand-md py-0 fixed-top">
+        <a href="{% url 'home' %}" class="navbar-brand">WeatherApp</a>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navLinks" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navLinks">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="{% url 'home' %}" class="nav-link">HOME</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'about' %}" class="nav-link">ABOUT</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'help' %}" class="nav-link">Help</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'contact' %}" class="nav-link">Contact Us</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <section class="hero is-dark is-bold is-fullheight-with-navbar">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    What's the weather like?
+                </h1>
+            </div>
+            
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                {{ form.name }}
+                            </div>
+                            <div class="control">
+                                <button type="submit" class="button is-info">
+                                    Add City
+                                </button>
+                            </div>
+                        </div>
+                        {% if message %}
+                        <div class="notification {{ message_class }}">{{ message }}<button class="del-msg delete"
+                                onclick="document.getElementsByClassName('notification')[0].style.display='none'"></button>
+                        </div>
+
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    {% for city_weather in weather_data %}
+                    <div class="box" id="cat">
+                        <article class="media">
+                            <div class="media-left">
+                                <figure class="image is-50x50">
+                                    <img src="http://openweathermap.org/img/w/{{ city_weather.icon }}.png" alt="Image">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <span class="title">{{ city_weather.city }}</span>
+                                        <br>
+                                        <span class="subtitle">{{ city_weather.temperature }}° F</span>
+                                        <br> {{ city_weather.description }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="media-right">
+                                <a href="{% url 'delete_city' city_weather.city %}">
+                                    <button class="delete"></button>
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="go">
+                <span class="text-light">&#169 2020 Weatherapp By Aditya Sharma </span>
+            </div>
+
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+    <script>
+        $(function () {
+            $(document).scroll(function () {
+                var $nav = $("#mainNavbar");
+                $nav.toggleClass("scrolled", $(this).scrollTop() > $nav.height());
+            });
+        });
+    </script>
+
+</body>
+
+</html>
